@@ -47,7 +47,7 @@
 
         .auth-header h1 {
             margin: 0 0 10px;
-            color: #1e3a8a;
+            color: #008842;
             font-weight: 700;
             font-size: 28px;
         }
@@ -84,14 +84,14 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #008842;
+            box-shadow: 0 0 0 3px rgba(0, 136, 66, 0.1);
         }
 
         .btn-submit {
             width: 100%;
             padding: 12px;
-            background-color: #2563eb;
+            background-color: #00a651;
             color: white;
             border: none;
             border-radius: 8px;
@@ -104,7 +104,7 @@
         }
 
         .btn-submit:hover {
-            background-color: #1d4ed8;
+            background-color: #008842;
         }
 
         .btn-submit:active {
@@ -118,14 +118,14 @@
         }
 
         .auth-footer a {
-            color: #2563eb;
+            color: #00a651;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
         }
 
         .auth-footer a:hover {
-            color: #1e3a8a;
+            color: #008842;
             text-decoration: underline;
         }
 

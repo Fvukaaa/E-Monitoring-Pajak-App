@@ -10,10 +10,30 @@ use App\Models\KepatuhanBulanan;
 
 class WajibPajakController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $wajibPajaks = WajibPajak::with('kepatuhanBulanan')->get();
-        return view('wajib-pajak', compact('wajibPajaks'));
+        $selectedTahun = $request->input('tahun', date('Y'));
+
+        $wajibPajaks = WajibPajak::with(['kepatuhanBulanan' => function ($query) use ($selectedTahun) {
+            $query->where('tahun', $selectedTahun);
+        }])->get();
+
+        $availableYears = KepatuhanBulanan::select('tahun')->distinct()->pluck('tahun')->toArray();
+        $currentYear = (int)date('Y');
+        
+        for ($y = $currentYear; $y >= $currentYear - 10; $y--) {
+            if (!in_array((string)$y, $availableYears)) {
+                $availableYears[] = (string)$y;
+            }
+        }
+
+        if (!in_array($selectedTahun, $availableYears)) {
+            $availableYears[] = $selectedTahun;
+        }
+
+        rsort($availableYears);
+
+        return view('wajib-pajak', compact('wajibPajaks', 'selectedTahun', 'availableYears'));
     }
 
     public function store(Request $request)
@@ -21,19 +41,19 @@ class WajibPajakController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'bulan' => 'required|string',
+            'tahun' => 'required|string',
             'status_kepatuhan' => 'required|in:PATUH,TIDAK PATUH'
         ]);
 
         $wp = WajibPajak::create(['nama' => $request->nama]);
 
-        // Add kepatuhan bulanan
         KepatuhanBulanan::create([
             'wajib_pajak_id' => $wp->id,
             'bulan' => $request->bulan,
+            'tahun' => $request->tahun,
             'status_kepatuhan' => $request->status_kepatuhan
         ]);
 
-        // Automatically create relations
         Pengawasan::create(['wajib_pajak_id' => $wp->id]);
         StatusPengawasan::create(['wajib_pajak_id' => $wp->id]);
 
@@ -56,6 +76,7 @@ class WajibPajakController extends Controller
     {
         $request->validate([
             'bulan' => 'required|string',
+            'tahun' => 'required|string',
             'status_kepatuhan' => 'required|in:PATUH,TIDAK PATUH'
         ]);
 
@@ -63,6 +84,7 @@ class WajibPajakController extends Controller
 
         $kepatuhan = KepatuhanBulanan::query()->where('wajib_pajak_id', $id)
             ->where('bulan', $request->bulan)
+            ->where('tahun', $request->tahun)
             ->first();
 
         if ($kepatuhan) {
@@ -71,6 +93,7 @@ class WajibPajakController extends Controller
             KepatuhanBulanan::create([
                 'wajib_pajak_id' => $id,
                 'bulan' => $request->bulan,
+                'tahun' => $request->tahun,
                 'status_kepatuhan' => $request->status_kepatuhan
             ]);
         }

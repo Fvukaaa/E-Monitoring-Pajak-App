@@ -16,6 +16,9 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-section" style="margin: auto; text-align: center; margin-bottom: 5px;">
+                    <div class="logo">
+                        <h2 style="color: #1e5f3f; font-size: 24px; font-weight: bold; margin: 0;">PAT</h2>
+                    </div>
                     <h2 style="font-size: 20px">E-MONITORING<br>PAJAK AIR TANAH</h2>
                 </div>
             </div>

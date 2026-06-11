@@ -45,6 +45,17 @@ body {
     gap: 15px;
 }
 
+.logo-section .logo {
+    width: 80px;
+    height: 80px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
 .sidebar-header h2 {
     color: #fff;
     font-size: 14px;
@@ -569,13 +580,13 @@ body {
 }
 
 .btn-reset {
-    background-color: #999;
+    background-color: #ff5959;
     color: #fff;
     margin-left: 10px;
 }
 
 .btn-reset:hover {
-    background-color: #666;
+    background-color: #bd4545;
 }
 
 .table-actions {
@@ -625,7 +636,6 @@ body {
 }
 
 @media (max-width: 768px) {
-
     .table-months,
     .table-upload,
     .table-detail {

@@ -3,12 +3,27 @@
 @section('title', 'Wajib Pajak Air Tanah')
 
 @section('content')
-    <div class="content-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="content-header"
+        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <h1>DATA WAJIB PAJAK AIR TANAH</h1>
-        <button onclick="document.getElementById('addModal').style.display='flex'" class="btn btn-save"
-            style="margin-right: 20px; display: inline-flex; align-items: center; gap: 5px;">
-            <i class="ph-fill ph-plus-circle" style="font-size: 18px;"></i> Tambah Wajib Pajak
-        </button>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <form action="{{ route('wajib-pajak.index') }}" method="GET"
+                style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                <label for="tahun" style="font-weight: bold; margin: 0;">Tahun:</label>
+                <select name="tahun" id="tahun" class="form-input"
+                    style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ccc; height: auto;"
+                    onchange="this.form.submit()">
+                    @foreach ($availableYears as $year)
+                        <option value="{{ $year }}" {{ $selectedTahun == $year ? 'selected' : '' }}>
+                            {{ $year }}</option>
+                    @endforeach
+                </select>
+            </form>
+            <button onclick="document.getElementById('addModal').style.display='flex'" class="btn btn-save"
+                style="margin-right: 20px; display: inline-flex; align-items: center; gap: 5px;">
+                <i class="ph-fill ph-plus-circle" style="font-size: 18px;"></i> Tambah Wajib Pajak
+            </button>
+        </div>
     </div>
 
     @if (session('success'))
@@ -84,14 +99,27 @@
                                 <h3 style="margin-top:0;">Input Status Bulan - {{ $wp->nama }}</h3>
                                 <form action="{{ route('wajib-pajak.store-bulan', $wp->id) }}" method="POST">
                                     @csrf
-                                    <div style="margin-bottom:15px;">
-                                        <label style="display:block; margin-bottom:5px;">Pilih Bulan</label>
-                                        <select name="bulan" class="form-input"
-                                            style="width:100%; box-sizing:border-box; height:38px;">
-                                            @foreach ($months as $m)
-                                                <option value="{{ $m }}">{{ $m }}</option>
-                                            @endforeach
-                                        </select>
+                                    <div style="margin-bottom:15px; display: flex; gap: 10px;">
+                                        <div style="flex: 1;">
+                                            <label style="display:block; margin-bottom:5px;">Pilih Bulan</label>
+                                            <select name="bulan" class="form-input"
+                                                style="width:100%; box-sizing:border-box; height:38px;">
+                                                @foreach ($months as $m)
+                                                    <option value="{{ $m }}">{{ $m }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <label style="display:block; margin-bottom:5px;">Tahun</label>
+                                            <select name="tahun" class="form-input"
+                                                style="width:100%; box-sizing:border-box; height:38px;">
+                                                @foreach ($availableYears as $year)
+                                                    <option value="{{ $year }}"
+                                                        {{ $selectedTahun == $year ? 'selected' : '' }}>
+                                                        {{ $year }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div style="margin-bottom:15px;">
                                         <label style="display:block; margin-bottom:5px;">Status Kepatuhan</label>
@@ -127,14 +155,26 @@
                     <input type="text" name="nama" class="form-input" style="width:100%; box-sizing:border-box;"
                         required>
                 </div>
-                <div style="margin-bottom:15px;">
-                    <label style="display:block; margin-bottom:5px;">Pilih Bulan</label>
-                    <select name="bulan" class="form-input" style="width:100%; box-sizing:border-box; height:38px;">
-                        @php $months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGUS', 'SEP', 'OKT', 'NOV', 'DES']; @endphp
-                        @foreach ($months as $m)
-                            <option value="{{ $m }}">{{ $m }}</option>
-                        @endforeach
-                    </select>
+                <div style="margin-bottom:15px; display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom:5px;">Pilih Bulan</label>
+                        <select name="bulan" class="form-input" style="width:100%; box-sizing:border-box; height:38px;">
+                            @php $months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGUS', 'SEP', 'OKT', 'NOV', 'DES']; @endphp
+                            @foreach ($months as $m)
+                                <option value="{{ $m }}">{{ $m }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom:5px;">Tahun</label>
+                        <select name="tahun" class="form-input"
+                            style="width:100%; box-sizing:border-box; height:38px;">
+                            @foreach ($availableYears as $year)
+                                <option value="{{ $year }}" {{ $selectedTahun == $year ? 'selected' : '' }}>
+                                    {{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div style="margin-bottom:15px;">
                     <label style="display:block; margin-bottom:5px;">Status Kepatuhan</label>
